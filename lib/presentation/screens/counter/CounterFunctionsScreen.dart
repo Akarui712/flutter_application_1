@@ -19,7 +19,7 @@ class _CounterFunctionsScreenState extends State<CounterFunctionsScreen>
     (
       appBar: AppBar
       (
-        title: const Text('Counter Functions'),
+        title: const Text('Aplicación de contador'),
         actions: 
         [
           IconButton
@@ -97,12 +97,7 @@ class CustomButton extends StatelessWidget
   final IconData icon;
   final VoidCallback? onPressed;
 
-  const CustomButton
-  ({
-    super.key,
-    required this.icon,
-    required this.onPressed
-  });
+  const CustomButton({super.key,required this.icon,required this.onPressed});
 
   @override
   Widget build(BuildContext context)
