@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CounterFunctionsScreen extends StatefulWidget
+class CounterFunctionsScreen extends StatefulWidget 
 {
   const CounterFunctionsScreen({super.key});
 
@@ -8,99 +8,135 @@ class CounterFunctionsScreen extends StatefulWidget
   State<CounterFunctionsScreen> createState() => _CounterFunctionsScreenState();
 }
 
-class _CounterFunctionsScreenState extends State<CounterFunctionsScreen>
+class _CounterFunctionsScreenState extends State<CounterFunctionsScreen> 
 {
   int clickCounter = 0;
 
+  void _sumarUno() 
+  {
+    setState(() 
+    {
+      clickCounter++;
+    });
+  }
+
+  void _restarUno() 
+  {
+    if (clickCounter == 0) return;
+    setState(() 
+    {
+      clickCounter--;
+    });
+  }
+
+  void _reiniciarContador() 
+  {
+    setState(() 
+    {
+      clickCounter = 0;
+    });
+  }
+
   @override
-  Widget build(BuildContext context)
+  Widget build(BuildContext context) 
   {
     return Scaffold
     (
       appBar: AppBar
       (
         title: const Text('Aplicación de contador'),
-        actions: 
-        [
-          IconButton
-          (
-            icon: const Icon(Icons.refresh_rounded),
-            onPressed: ()
-            {
-              setState(() 
-              {
-                clickCounter = 0;
-              });
-            },
-          )
-        ],
       ),
       body: Center
       (
-        child: Column
+        child: _contador
         (
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: 
-          [
-            Text('$clickCounter',
-            style: const TextStyle(
-              fontSize: 160, fontWeight: FontWeight.w100)),
-
-              Text('Click${clickCounter == 1 ? '' : 's'}',
-              style: const TextStyle(fontSize: 25))
-          ],
+          count: clickCounter,
         ),
       ),
-      floatingActionButton: Column
+      floatingActionButton: _CounterButtons
       (
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: 
-        [
-          CustomButton
-          (
-            icon: Icons.refresh_rounded,
-            onPressed: ()
-            {
-              clickCounter = 0;
-              setState(() {});
-            },
-          ),
-          const SizedBox(height: 10),
-          CustomButton
-          (
-            icon: Icons.exposure_minus_1_outlined,
-            onPressed: ()
-            {
-              if(clickCounter == 0) return;
-              clickCounter--;
-              setState(() {});
-            },
-          ),
-          const SizedBox(height: 10),
-          CustomButton
-          (
-            icon: Icons.exposure_plus_1_outlined,
-            onPressed: ()
-            {
-              clickCounter++;
-              setState(() {});
-            },
-          ),
-        ],
+        onIncrement: _sumarUno,
+        onDecrement: _restarUno,
+        onReset: _reiniciarContador
       ),
     );
   }
 }
 
-class CustomButton extends StatelessWidget
+class _contador extends StatelessWidget 
+{
+  final int count;
+  const _contador({required this.count});
+
+  @override
+  Widget build(BuildContext context) 
+  {
+    return Column
+    (
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: 
+      [
+        Text('$count',
+            style: const TextStyle(fontSize: 160, fontWeight: FontWeight.w100)),
+        Text('Click${count == 1 ? '' : 's'}',
+            style: const TextStyle(fontSize: 25))
+      ],
+    );
+  }
+}
+
+class _CounterButtons extends StatelessWidget 
+{
+  final VoidCallback onIncrement;
+  final VoidCallback onDecrement;
+  final VoidCallback onReset;
+
+  const _CounterButtons
+  ({
+    required this.onIncrement,
+    required this.onDecrement,
+    required this.onReset
+  });
+
+  @override
+  Widget build(BuildContext context) 
+  {
+    return Column
+    (
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: 
+      [
+        botonesPerzonalizados
+        (
+          icon: Icons.exposure_plus_1_outlined,
+          onPressed: onIncrement,
+        ),
+        const SizedBox(height: 10),
+        botonesPerzonalizados
+        (
+          icon: Icons.exposure_minus_1_outlined,
+          onPressed: onDecrement,
+        ),
+        const SizedBox(height: 10),
+        botonesPerzonalizados
+        (
+          icon: Icons.refresh_rounded,
+          onPressed: onReset,
+        ),
+      ],
+    );
+  }
+}
+
+class botonesPerzonalizados extends StatelessWidget 
 {
   final IconData icon;
   final VoidCallback? onPressed;
 
-  const CustomButton({super.key,required this.icon,required this.onPressed});
+  const botonesPerzonalizados({super.key, required this.icon, required this.onPressed});
 
   @override
-  Widget build(BuildContext context)
+  Widget build(BuildContext context) 
   {
     return FloatingActionButton
     (
